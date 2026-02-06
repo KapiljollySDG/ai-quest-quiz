@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Quest - AI & Testing Knowledge Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Comprehensive 9-level quiz covering AI technologies, GPT, Claude, testing strategies, and more. Test your AI and software testing knowledge!">
+  <meta name="keywords" content="AI quiz, GPT, Claude, software testing, AI testing, prompt engineering, MCP, artificial intelligence">
+  <meta name="author" content="SD Global">
+  <meta property="og:title" content="AI Quest - AI & Testing Knowledge Quiz">
+  <meta property="og:description" content="Test your knowledge of AI technologies and software testing practices with our comprehensive 9-level quiz.">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --primary: #ff6b35;
+      --secondary: #ff8c42;
+      --background: linear-gradient(135deg, #1a1a1a 0, #2d1810 35%, #ff6b35 100%);
+      --button-bg: linear-gradient(90deg, #ff6b35, #ff8c42);
+      --button-hover: linear-gradient(90deg, #ff8c42, #ffab42);
+      --text-light: #fff3e0;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background: var(--background);
+      min-height: 100vh;
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: rgba(26, 26, 26, 0.90);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+      padding: 0 24px;
+      height: 80px;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      margin-right: 32px;
+    }
+    .sd-logo {
+      width: 140px;
+      height: 75;
+      border: 2px solid #ff8c42;
+      background: #fff;
+    }
+    .sd-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .game-title {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-right: auto;
+      margin-left: 12px;
+      color: #ff6b35;
+      text-shadow: 0 1px 16px #ff6b3570;
+    }
+    .timer {
+      font-size: 1.25em;
+      font-weight: 500;
+      background: rgba(255, 107, 53, 0.05);
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-left: 32px;
+      color: #ff6b35;
+      border: 1px solid #ff6b3580;
+      box-shadow: 0 1px 6px #ff6b3540;
+    }
+    main {
+      margin-top: 100px;
+      width: 100%;
+      max-width: 660px;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .progress-bar-container {
+      width: 100%;
+      background: #2d1810;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px #ff6b3530;
+      margin: 28px 0 18px 0;
+      height: 20px;
+      border: 1px solid #3d2320;
+    }
+    .progress-bar {
+      height: 100%;
+      background-image: linear-gradient(90deg, #ff6b35 40%, #d2380d 100%);
+      border-radius: 12px 0 0 12px;
+      transition: width 0.35s;
+    }
+    .level-title {
+      font-size: 1.54em;
+      margin: 32px 0 10px;
+      font-weight: 600;
+      color: #ff8c42;
+      letter-spacing: 0.1em;
+    }
+    .question-count {
+      font-size: 1.1em;
+      color: #ffccb3;
+      margin-bottom: 3px;
+    }
+    .question-box {
+      width: 100%;
+      background: rgba(45, 24, 16, 0.92);
+      border-radius: 20px;
+      box-shadow: 0 2px 22px #ff6b353a;
+      padding: 30px 20px;
+      margin-bottom: 18px;
+    }
+    .question-text {
+      font-size: 1.25em;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      color: #fff3e0;
+      font-weight: 500;
+      text-shadow: 0 2px 12px #ff6b3512;
+    }
+    .choices { display: flex; flex-direction: column; gap: 16px;}
+    .choice-btn {
+      background: var(--button-bg);
+      border: none;
+      border-radius: 12px;
+      color: #1a1a1a;
+      padding: 14px 0;
+      font-size: 1.11em;
+      font-weight: bold;
+      letter-spacing: 0.01em;
+      margin: 0;
+      cursor: pointer;
+      box-shadow: 0 1px 10px #ff6b3520;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .choice-btn:hover, .choice-btn.selected {
+      background: var(--button-hover);
+      color: #2d1810;
+      box-shadow: 0 2px 18px #ff8c4266;
+    }
+    .open-ended-box {
+      display: flex; flex-direction: column; gap: 12px;
+      margin: 18px 0;
+    }
+    .prompt-input {
+      resize: vertical;
+      min-height: 100px;
+      font-size: 1.1em;
+      padding: 15px 12px;
+      border-radius: 8px;
+      border: 1.5px solid #ff8c42;
+      background: #2d1810;
+      color: #fff3e0;
+      box-shadow: 0 2px 8px #ff6b3512;
+      outline: none;
+      margin-bottom: 4px;
+      transition: border 0.22s;
+    }
+    .prompt-input:focus { border:2px solid #ffab42; }
+    .validation-error {
+      color: #ff6464;
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: none;
+    }
+    .submit-btn, .next-level-btn, .start-btn {
+      margin-top: 16px;
+      padding: 13px 34px;
+      font-size: 1.17em;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      background: var(--button-bg);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 14px #ff6b3566;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.22s;
+    }
+    .submit-btn:disabled {
+      background: #cc5a2e90;
+      cursor: not-allowed;
+      color: #2d1810;
+    }
+    .submit-btn:hover, .next-level-btn:hover, .start-btn:hover {
+      background: var(--button-hover);
+      color: #2d1810;
+    }
+    .score {
+      margin: 18px 0 8px 0;
+      font-weight: 600;
+      color: #ffab42;
+      font-size: 1.2em;
+    }
+    .completion-msg, .final-score-msg {
+      margin: 30px 0 24px 0;
+      font-size: 1.35em;
+      color: #fff3e0;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 1px 12px #ff6b3534;
+    }
+    .final-screen {
+      margin-top: 40px;
+      padding: 32px 0;
+      background: rgba(45, 24, 16, 0.22);
+      border-radius: 22px;
+      box-shadow: 0 4px 24px #ff6b352e;
+      width: 100%;
+    }
+    .user-info-form {
+      background: rgba(45, 24, 16, 0.92);
+      border-radius: 20px;
+      box-shadow: 0 2px 22px #ff6b353a;
+      padding: 30px;
+      margin: 40px 0;
+      width: 100%;
+      max-width: 500px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      color: #ff8c42;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1.5px solid #ff8c42;
+      background: #2d1810;
+      color: #fff3e0;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border: 2px solid #ffab42;
+    }
+    .warning-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .warning-content {
+      background: rgba(45, 24, 16, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 4px 30px #ff6b3540;
+      border: 2px solid #ff6b35;
+      max-width: 500px;
+    }
+    .warning-title {
+      color: #ff6464;
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .warning-text {
+      color: #fff3e0;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    .warning-btn {
+      background: var(--button-bg);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+    .warning-btn:hover {
+      background: var(--button-hover);
+    }
+    .save-status {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+      z-index: 100;
+      transition: all 0.3s;
+      display: none;
+    }
+    .save-success {
+      background: rgba(76, 175, 80, 0.9);
+      color: #1b4d3e;
+    }
+    .save-error {
+      background: rgba(255, 100, 100, 0.9);
+      color: #4f0b0b;
+    }
+    .save-saving {
+      background: rgba(255, 107, 53, 0.9);
+      color: #2d1810;
+    }
+    @media (max-width: 700px) {
+      main { max-width: 98vw;}
+      .header { flex-wrap: wrap; height: auto;}
+      .game-title { font-size: 1.3em;}
+      .timer { font-size: 1em; margin-left: 10px;}
+      .progress-bar-container { height: 13px;}
+      .sd-logo { width: 35px; height: 35px;}
+      .warning-content { padding: 30px 20px; margin: 20px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <div class="sd-logo">
+        <img src="sd-global-logo.png" alt="SD Global Logo" />
+      </div>
+    </div>
+    <div class="game-title">AI & Testing Quest</div>
+    <div class="timer" id="timer">30:00</div>
+  </header>
+
+  <!-- Save Status Indicator -->
+  <div class="save-status" id="saveStatus"></div>
+
+  <!-- Tab Switch Warning Modal -->
+  <div class="warning-modal" id="warningModal">
+    <div class="warning-content">
+      <div class="warning-title">⚠️ WARNING</div>
+      <div class="warning-text" id="warningText"></div>
+      <button class="warning-btn" onclick="closeWarning()">Continue Quiz</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar" style="width:0%;"></div>
+    </div>
+    <div id="quiz"></div>
+    <div id="message"></div>
+  </main>
+
+  <script>
+    // User Information
+    let userInfo = {
+      name: '',
+      project: '',
+      role: ''
+    };
+
+    // Tab switching detection variables
+    let tabSwitchCount = 0;
+    let gameStarted = false;
+    let quizTerminated = false;
+    let sessionId = null;
+
+    // Google Apps Script URL - UPDATED WITH YOUR ACTUAL URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytxhz0PYAVDvIPzZXMCuaVOEws4IIFrnWZk-UsCVP6xMX9jIODD6iMrbidzxYrpLyqnA/exec';
+    
+    // Temporary offline mode flag - set to false once Google Apps Script is properly deployed
+    const OFFLINE_MODE = false;
+
+    // COMPLETE AI & Software Testing Quiz Questions - ALL LEVELS INCLUDED
+    const levels = [
+      // Level 1: AI Fundamentals & Testing Basics
+      {
+        title: "Level 1: AI Fundamentals & Testing Basics",
+        questions: [
+          {
+            type: 'mc',
+            text: "What does 'LLM' stand for in AI terminology?",
+            options: ["Large Language Model", "Linear Learning Machine", "Local Language Method", "Limited Learning Model"],
+            answer: 0
+          },
+          {
+            type: 'mc',
+            text: "Which testing approach is best for AI/ML applications?",
+            options: ["Traditional functional testing only", "Data-driven testing with model validation", "Manual testing only", "No testing needed for AI"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is the primary challenge when testing AI applications?",
+            options: ["Deterministic outputs", "Non-deterministic and probabilistic outputs", "Simple logic flows", "Fixed response patterns"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "Which company developed the GPT series of models?",
+            options: ["Google", "Microsoft", "OpenAI", "Meta"],
+            answer: 2
+          },
+          {
+            type: 'mc',
+            text: "In AI testing, what is 'ground truth'?",
+            options: ["The AI's output", "The known correct answer for training/testing", "The user's input", "The model's confidence score"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 2: GPT & Language Models
+      {
+        title: "Level 2: GPT & Language Models",
+        questions: [
+          {
+            type: 'mc',
+            text: "What does GPT stand for?",
+            options: ["General Purpose Technology", "Generative Pre-trained Transformer", "Global Processing Tool", "Guided Programming Technique"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "Which is the latest major GPT model from OpenAI?",
+            options: ["GPT-3", "GPT-3.5", "GPT-4", "GPT-5"],
+            answer: 2
+          },
+          {
+            type: 'oe',
+            text: "Describe how you would test a GPT-based chatbot for accuracy and reliability. Include specific test scenarios and metrics you would use.",
+            validation: (text) => {
+              const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+              
+              // Check word count (7-1000 words)
+              if (words.length < 7 || words.length > 1000) {
+                return false;
+              }
+              
+              // Check if words make sense (not random characters)
+              const validWords = words.filter(word => {
+                // Remove punctuation and check if word contains mostly letters
+                const cleanWord = word.replace(/[.,!?;:"'-]/g, '');
+                return /^[a-zA-Z]+$/.test(cleanWord) && cleanWord.length >= 2;
+              });
+              
+              // At least 70% of words should be valid English-like words
+              return validWords.length >= (words.length * 0.7);
+            },
+            points: 20
+          },
+          {
+            type: 'mc',
+            text: "What is 'temperature' in GPT model parameters?",
+            options: ["Model training time", "Hardware temperature", "Randomness/creativity control", "Processing speed"],
+            answer: 2
+          },
+          {
+            type: 'mc',
+            text: "Which is NOT a common issue when testing language models?",
+            options: ["Hallucination", "Bias", "Inconsistent responses", "Deterministic behavior"],
+            answer: 3
+          }
+        ]
+      },
+      // Level 3: Claude & Anthropic Models
+      {
+        title: "Level 3: Claude & Anthropic Models",
+        questions: [
+          {
+            type: 'mc',
+            text: "Claude is developed by which company?",
+            options: ["OpenAI", "Google", "Anthropic", "Microsoft"],
+            answer: 2
+          },
+          {
+            type: 'mc',
+            text: "What is Claude's key differentiator compared to other AI models?",
+            options: ["Fastest processing", "Constitutional AI and safety focus", "Largest parameter count", "Image generation"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "How should you test AI model safety features like those in Claude?",
+            options: ["Only positive test cases", "Include harmful content detection tests", "Skip safety testing", "Test only basic functionality"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Compare testing strategies for Claude vs GPT models. What specific differences would you consider in your test approach?",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const hasComparison = lower.includes('claude') && lower.includes('gpt');
+              const hasDifferences = lower.includes('difference') || lower.includes('different') || lower.includes('compare') || lower.includes('vs');
+              const hasTestingStrategy = lower.includes('test') || lower.includes('strategy') || lower.includes('approach');
+              const hasSpecific = lower.includes('safety') || lower.includes('constitutional') || lower.includes('bias') || lower.includes('response');
+              return hasComparison && hasDifferences && hasTestingStrategy && hasSpecific && text.length >= 120;
+            },
+            points: 20
+          },
+          {
+            type: 'mc',
+            text: "What is 'Constitutional AI' as implemented in Claude?",
+            options: ["AI that follows laws", "AI trained with human feedback and principles", "AI for government use", "AI with constitutional knowledge"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 4: MCP & Agent Platforms
+      {
+        title: "Level 4: MCP & Agent Platforms",
+        questions: [
+          {
+            type: 'mc',
+            text: "What does MCP stand for in AI contexts?",
+            options: ["Machine Code Protocol", "Model Control Platform", "Multi-Channel Processing", "Microsoft Copilot Platform"],
+            answer: 3
+          },
+          {
+            type: 'mc',
+            text: "What is the primary purpose of AI agent platforms?",
+            options: ["Replace human workers", "Enable AI to perform complex, multi-step tasks", "Store data", "Generate images"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Design a testing strategy for an AI agent that can browse the web, read documents, and make API calls. What are the key risk areas and how would you test them?",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const agentCapabilities = ['browse', 'web', 'document', 'api', 'call', 'multi-step', 'task'];
+              const foundCapabilities = agentCapabilities.filter(cap => lower.includes(cap));
+              const hasRisks = lower.includes('risk') || lower.includes('security') || lower.includes('privacy') || lower.includes('error');
+              const hasTestStrategy = lower.includes('test') || lower.includes('strategy') || lower.includes('approach') || lower.includes('validate');
+              const hasSpecificTests = text.includes('1.') || text.includes('2.') || lower.includes('first') || lower.includes('second');
+              return foundCapabilities.length >= 3 && hasRisks && hasTestStrategy && hasSpecificTests && text.length >= 200;
+            },
+            points: 25
+          },
+          {
+            type: 'mc',
+            text: "When testing AI agents, what is the most critical aspect?",
+            options: ["Speed of execution", "Safety and controlled behavior", "User interface design", "Cost optimization"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is a key difference between testing traditional software vs AI agents?",
+            options: ["No difference", "AI agents require testing autonomous decision-making", "AI agents are easier to test", "Traditional software needs more testing"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 5: Prompt Engineering & Testing
+      {
+        title: "Level 5: Prompt Engineering & Testing",
+        questions: [
+          {
+            type: 'mc',
+            text: "What is prompt engineering?",
+            options: ["Hardware engineering", "Designing effective inputs for AI models", "Software debugging", "Database optimization"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Create a comprehensive prompt for testing an AI model's ability to generate test cases for a login functionality. Include specific instructions and expected outputs.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const hasPromptStructure = text.includes(':') || text.includes('"') || lower.includes('prompt') || lower.includes('instruction');
+              const hasTestCaseGeneration = lower.includes('test case') || lower.includes('test') && lower.includes('generate');
+              const hasLoginContext = lower.includes('login') || lower.includes('authentication') || lower.includes('username') || lower.includes('password');
+              const hasExpectedOutput = lower.includes('expected') || lower.includes('output') || lower.includes('result') || lower.includes('format');
+              const hasSpecificInstructions = text.length >= 100 && (text.includes('1.') || text.includes('step') || text.includes('include'));
+              return hasPromptStructure && hasTestCaseGeneration && hasLoginContext && hasExpectedOutput && hasSpecificInstructions;
+            },
+            points: 25
+          },
+          {
+            type: 'mc',
+            text: "What is 'few-shot prompting'?",
+            options: ["Using few words in prompts", "Providing examples in the prompt", "Testing with few test cases", "Quick prompt responses"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "When testing prompt effectiveness, what should you measure?",
+            options: ["Only response time", "Accuracy, relevance, and consistency", "Token count only", "User satisfaction only"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Explain how you would systematically test different prompt variations for an AI model. Include your approach for measuring prompt performance.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const hasSystematic = lower.includes('systematic') || lower.includes('approach') || lower.includes('method') || lower.includes('process');
+              const hasVariations = lower.includes('variation') || lower.includes('different') || lower.includes('multiple') || lower.includes('compare');
+              const hasMeasurement = lower.includes('measure') || lower.includes('metric') || lower.includes('evaluate') || lower.includes('performance');
+              const hasPromptTesting = lower.includes('prompt') && lower.includes('test');
+              const hasSpecificApproach = text.length >= 150 && (lower.includes('baseline') || lower.includes('a/b') || lower.includes('score') || lower.includes('benchmark'));
+              return hasSystematic && hasVariations && hasMeasurement && hasPromptTesting && hasSpecificApproach;
+            },
+            points: 20
+          }
+        ]
+      },
+      // Level 6: API Testing for AI Services
+      {
+        title: "Level 6: API Testing for AI Services",
+        questions: [
+          {
+            type: 'mc',
+            text: "Which HTTP method is typically used to send prompts to AI APIs?",
+            options: ["GET", "POST", "PUT", "DELETE"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is a key difference when testing AI APIs vs traditional REST APIs?",
+            options: ["No difference", "AI APIs return probabilistic responses", "AI APIs are always faster", "AI APIs don't use HTTP"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Design a comprehensive test suite for OpenAI's GPT API. Include authentication, rate limiting, response validation, and error handling tests.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const apiTestComponents = ['authentication', 'rate limit', 'response', 'validation', 'error', 'handling'];
+              const foundComponents = apiTestComponents.filter(comp => lower.includes(comp.replace(' ', '')));
+              const hasOpenAI = lower.includes('openai') || lower.includes('gpt');
+              const hasTestStructure = text.includes('1.') || text.includes('test:') || lower.includes('scenario') || lower.includes('case');
+              const hasSpecificTests = lower.includes('401') || lower.includes('429') || lower.includes('token') || lower.includes('header');
+              return foundComponents.length >= 4 && hasOpenAI && hasTestStructure && text.length >= 200;
+            },
+            points: 25
+          },
+          {
+            type: 'mc',
+            text: "When testing AI API rate limits, what should you verify?",
+            options: ["Only successful requests", "Rate limit headers and 429 status codes", "Response content only", "API documentation"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is important when testing AI API response times?",
+            options: ["Responses should be instant", "Account for model processing time and variations", "Only test with minimal inputs", "Response time doesn't matter"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 7: Performance & Load Testing AI Systems
+      {
+        title: "Level 7: Performance & Load Testing AI Systems",
+        questions: [
+          {
+            type: 'mc',
+            text: "What makes performance testing of AI systems unique?",
+            options: ["No difference from web apps", "Variable processing times based on input complexity", "AI systems are always fast", "Performance testing not needed"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Plan a load testing strategy for a ChatGPT-like service that serves 1 million users. Include infrastructure considerations, bottlenecks to watch, and success metrics.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const loadTestConcepts = ['load', 'performance', 'infrastructure', 'bottleneck', 'metric', 'scale', 'concurrent'];
+              const foundConcepts = loadTestConcepts.filter(concept => lower.includes(concept));
+              const hasUserVolume = lower.includes('million') || lower.includes('user') || lower.includes('concurrent');
+              const hasInfrastructure = lower.includes('infrastructure') || lower.includes('server') || lower.includes('resource') || lower.includes('cpu') || lower.includes('memory');
+              const hasMetrics = lower.includes('metric') || lower.includes('measure') || lower.includes('response time') || lower.includes('throughput');
+              const hasBottlenecks = lower.includes('bottleneck') || lower.includes('limitation') || lower.includes('constraint');
+              return foundConcepts.length >= 4 && hasUserVolume && hasInfrastructure && hasMetrics && text.length >= 200;
+            },
+            points: 30
+          },
+          {
+            type: 'mc',
+            text: "What is a critical bottleneck in AI system performance?",
+            options: ["Database queries", "GPU/TPU processing capacity", "Network bandwidth only", "User interface rendering"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "How should you test AI system performance with different input sizes?",
+            options: ["Use only small inputs", "Test with varied token counts and complexity", "Input size doesn't matter", "Only test maximum inputs"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is 'model inference time'?",
+            options: ["Time to train the model", "Time to process input and generate output", "Time to load the model", "Time to update the model"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 8: AI Security & Ethics Testing
+      {
+        title: "Level 8: AI Security & Ethics Testing",
+        questions: [
+          {
+            type: 'mc',
+            text: "What is 'prompt injection' in AI security?",
+            options: ["Installing prompts", "Malicious prompts to manipulate AI behavior", "Fast prompt delivery", "Prompt optimization"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Design a security testing strategy for an AI-powered customer service bot. Include tests for prompt injection, data leakage, and inappropriate responses.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const securityConcepts = ['security', 'prompt injection', 'data leakage', 'inappropriate', 'malicious', 'attack', 'vulnerability'];
+              const foundConcepts = securityConcepts.filter(concept => lower.includes(concept.replace(' ', '')));
+              const hasCustomerService = lower.includes('customer') || lower.includes('service') || lower.includes('bot') || lower.includes('support');
+              const hasTestStrategy = lower.includes('test') || lower.includes('strategy') || lower.includes('approach');
+              const hasSpecificTests = text.includes('1.') || text.includes('test:') || lower.includes('scenario');
+              const hasSecurityFocus = lower.includes('injection') || lower.includes('leakage') || lower.includes('inappropriate');
+              return foundConcepts.length >= 3 && hasCustomerService && hasTestStrategy && hasSpecificTests && hasSecurityFocus && text.length >= 200;
+            },
+            points: 30
+          },
+          {
+            type: 'mc',
+            text: "What is AI bias in the context of testing?",
+            options: ["Preference for certain AI models", "Unfair treatment of different user groups", "Technical preference settings", "Speed optimization bias"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "How should you test for AI hallucinations?",
+            options: ["Don't test for them", "Compare outputs with verified facts and sources", "Only test happy paths", "Trust all AI outputs"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "What is important when testing AI for privacy compliance?",
+            options: ["Speed only", "Data handling and PII protection", "User interface design", "Cost optimization"],
+            answer: 1
+          }
+        ]
+      },
+      // Level 9: Advanced AI Testing & Future Scenarios
+      {
+        title: "Level 9: Advanced AI Testing & Future Scenarios",
+        questions: [
+          {
+            type: 'oe',
+            text: "You're tasked with testing a new multimodal AI that processes text, images, and audio. Design a comprehensive testing framework including test data management, quality metrics, and automation strategies.",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const multimodalAspects = ['text', 'image', 'audio', 'multimodal', 'visual', 'speech'];
+              const foundAspects = multimodalAspects.filter(aspect => lower.includes(aspect));
+              const hasFramework = lower.includes('framework') || lower.includes('strategy') || lower.includes('approach') || lower.includes('plan');
+              const hasTestData = lower.includes('test data') || lower.includes('data management') || lower.includes('dataset');
+              const hasMetrics = lower.includes('metric') || lower.includes('quality') || lower.includes('measure') || lower.includes('evaluate');
+              const hasAutomation = lower.includes('automation') || lower.includes('automate') || lower.includes('automated');
+              const hasComprehensive = text.length >= 300 && foundAspects.length >= 3;
+              return hasFramework && hasTestData && hasMetrics && hasAutomation && hasComprehensive;
+            },
+            points: 40
+          },
+          {
+            type: 'mc',
+            text: "What is the biggest challenge in testing AGI (Artificial General Intelligence) systems?",
+            options: ["Speed", "Unpredictable emergent behaviors", "Cost", "User interface"],
+            answer: 1
+          },
+          {
+            type: 'oe',
+            text: "Describe how AI is changing the software testing profession. What new skills do testers need, and how should testing processes evolve?",
+            validation: (text) => {
+              const lower = text.toLowerCase();
+              const evolutionAspects = ['change', 'changing', 'evolve', 'evolution', 'future', 'new', 'skill'];
+              const foundAspects = evolutionAspects.filter(aspect => lower.includes(aspect));
+              const hasSkills = lower.includes('skill') || lower.includes('learn') || lower.includes('knowledge') || lower.includes('training');
+              const hasProcesses = lower.includes('process') || lower.includes('methodology') || lower.includes('approach') || lower.includes('practice');
+              const hasAI = lower.includes('ai') || lower.includes('artificial intelligence') || lower.includes('machine learning') || lower.includes('automation');
+              const hasTesting = lower.includes('test') || lower.includes('qa') || lower.includes('quality');
+              const hasDepth = text.length >= 200 && foundAspects.length >= 2;
+              return hasSkills && hasProcesses && hasAI && hasTesting && hasDepth;
+            },
+            points: 35
+          },
+          {
+            type: 'mc',
+            text: "Which testing approach will be most important for future AI systems?",
+            options: ["Manual testing only", "Continuous AI model validation and monitoring", "One-time testing", "No testing needed"],
+            answer: 1
+          },
+          {
+            type: 'mc',
+            text: "As an AI Testing specialist, your most critical responsibility is:",
+            options: ["Testing speed", "Ensuring AI safety and reliability", "Reducing costs", "Following traditional methods"],
+            answer: 1
+          }
+        ]
+      }
+    ];
+
+    let levelIndex = 0, questionIndex = 0, score = 0;
+    let minutes = 30, seconds = 0;
+    let timerInterval = null, quizOver = false;
+
+    // Initialize session tracking
+    function initializeSessionTracking() {
+      if (!sessionId) {
+        sessionId = 'quiz_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      }
+    }
+
+    // Google Sheets Integration with enhanced debugging and CORS handling
+    function saveToGoogleSheets(data) {
+      console.log('Starting save to Google Sheets...');
+      console.log('Data to save:', data);
+      
+      // Offline mode for testing
+      if (OFFLINE_MODE) {
+        console.log('OFFLINE MODE: Data saved to browser console and localStorage');
+        showSaveStatus('✓ Saved locally (offline mode)', 'success');
+        
+        // Save to localStorage for offline testing
+        try {
+          const savedData = JSON.parse(localStorage.getItem('offlineQuizData') || '[]');
+          savedData.push({
+            timestamp: new Date().toISOString(),
+            data: data
+          });
+          localStorage.setItem('offlineQuizData', JSON.stringify(savedData));
+          console.log('✅ Data saved to localStorage. Total entries:', savedData.length);
+          
+          // Also log to console for manual collection if needed
+          console.log('📊 QUIZ DATA:', JSON.stringify(data, null, 2));
+        } catch (storageError) {
+          console.error('Could not save to localStorage:', storageError);
+          showSaveStatus('⚠ Could not save locally', 'error');
+        }
+        return;
+      }
+      
+      console.log('Google Script URL:', GOOGLE_SCRIPT_URL);
+      showSaveStatus('Saving...', 'saving');
+      
+      // Add session ID to data
+      data.sessionId = sessionId;
+      
+      const payload = JSON.stringify(data);
+      console.log('JSON payload:', payload);
+      
+      // Enhanced fetch with timeout and retry mechanism
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        body: payload,
+        signal: controller.signal
+      })
+      .then(response => {
+        clearTimeout(timeoutId);
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
+        }
+        return response.text();
+      })
+      .then(responseText => {
+        console.log('Raw response text:', responseText);
+        
+        // Check if response is HTML (error page) instead of JSON
+        if (responseText.trim().startsWith('<!DOCTYPE html') || responseText.trim().startsWith('<html')) {
+          console.error('Received HTML response instead of JSON - likely a Google Apps Script deployment issue');
+          console.error('HTML response (first 500 chars):', responseText.substring(0, 500));
+          throw new Error('Google Apps Script deployment error - received HTML instead of JSON');
+        }
+        
+        try {
+          const result = JSON.parse(responseText);
+          console.log('Parsed result:', result);
+          
+          if (result.success) {
+            showSaveStatus('✓ Data saved successfully', 'success');
+            console.log('✅ Successfully saved to Google Sheets');
+          } else {
+            throw new Error(result.error || 'Server returned success=false');
+          }
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError);
+          console.error('Response text that failed to parse:', responseText);
+          throw new Error(`Invalid JSON response: ${parseError.message}`);
+        }
+      })
+      .catch(error => {
+        clearTimeout(timeoutId);
+        console.error('Error saving to Google Sheets:', error);
+        console.error('Full error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+        
+        // More specific error messages for common issues
+        let userMessage = 'Save failed';
+        if (error.name === 'AbortError') {
+          userMessage = 'Request timeout - please check your internet connection';
+          console.error('Request timed out after 10 seconds');
+        } else if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+          userMessage = 'Network error - please check your internet connection';
+          console.error('CORS/Network error detected. This might be due to internet connectivity issues.');
+        } else if (error.message.includes('CORS')) {
+          userMessage = 'CORS error - please try refreshing the page';
+        } else if (error.message.includes('Google Apps Script deployment error')) {
+          userMessage = 'Script deployment error - please contact administrator';
+          console.error('The Google Apps Script may not be properly deployed or may lack permissions.');
+        } else {
+          userMessage = `Save failed: ${error.message}`;
+        }
+        
+        showSaveStatus(`⚠ ${userMessage}`, 'error');
+        console.log('QUIZ_DATA (for manual backup):', data);
+        
+        // Store failed data locally as backup
+        try {
+          const failedSaves = JSON.parse(localStorage.getItem('failedSaves') || '[]');
+          failedSaves.push({
+            timestamp: new Date().toISOString(),
+            data: data,
+            error: error.message
+          });
+          localStorage.setItem('failedSaves', JSON.stringify(failedSaves));
+          console.log('Data backed up to localStorage for recovery');
+          console.log('💾 You can continue the quiz - all data is being saved locally as backup');
+        } catch (storageError) {
+          console.error('Could not backup to localStorage:', storageError);
+        }
+      });
+    }
+
+    function showSaveStatus(message, type) {
+      const statusDiv = document.getElementById('saveStatus');
+      statusDiv.textContent = message;
+      statusDiv.className = `save-status save-${type}`;
+      statusDiv.style.display = 'block';
+      
+      if (type !== 'saving') {
+        setTimeout(() => {
+          statusDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    // Recovery function for failed saves
+    function recoverFailedSaves() {
+      try {
+        const failedSaves = JSON.parse(localStorage.getItem('failedSaves') || '[]');
+        if (failedSaves.length > 0) {
+          console.log(`Found ${failedSaves.length} failed saves. Attempting recovery...`);
+          failedSaves.forEach((save, index) => {
+            console.log(`Recovering save ${index + 1}:`, save.data);
+            // Try to resend each failed save
+            saveToGoogleSheets(save.data);
+          });
+          // Clear the failed saves after attempting recovery
+          localStorage.removeItem('failedSaves');
+        }
+      } catch (error) {
+        console.error('Error during recovery:', error);
+      }
+    }
+
+    // Tab switching detection
+    function setupTabSwitchDetection() {
+      document.addEventListener('visibilitychange', function() {
+        if (gameStarted && !quizOver && !quizTerminated && document.hidden) {
+          handleTabSwitch();
+        }
+      });
+
+      window.addEventListener('blur', function() {
+        if (gameStarted && !quizOver && !quizTerminated) {
+          handleTabSwitch();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (gameStarted && !quizOver && !quizTerminated) {
+          if ((e.ctrlKey && e.key === 'Tab') || 
+              (e.altKey && e.key === 'Tab') ||
+              (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+              e.key === 'F12' ||
+              (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+              (e.ctrlKey && e.key === 'U')) {
+            e.preventDefault();
+            handleTabSwitch();
+          }
+        }
+      });
+    }
+
+    function handleTabSwitch() {
+      tabSwitchCount++;
+      
+      if (tabSwitchCount === 1) {
+        showWarning(
+          "🚨 <strong style='color: #ff9844;'>FIRST WARNING</strong><br><br>You cannot switch tabs during the test!<br>This is your first warning.<br><br>Please continue with the quiz and <strong>do not switch tabs again</strong>."
+        );
+        logTabSwitchViolation("First Warning");
+        
+      } else if (tabSwitchCount === 2) {
+        showWarning(
+          "🚨 <strong style='color: #ff6644;'>SECOND WARNING</strong><br><br>You switched tabs again!<br>This is your <strong>FINAL WARNING</strong>.<br><br>If you switch tabs one more time, <strong>the quiz will be terminated</strong> and you will need to contact HR."
+        );
+        logTabSwitchViolation("Second Warning - Final Warning");
+        
+      } else if (tabSwitchCount >= 3) {
+        terminateQuiz();
+      }
+    }
+
+    function showWarning(message) {
+      document.getElementById('warningText').innerHTML = message;
+      document.getElementById('warningModal').style.display = 'flex';
+    }
+
+    function closeWarning() {
+      document.getElementById('warningModal').style.display = 'none';
+    }
+
+    function terminateQuiz() {
+      quizTerminated = true;
+      quizOver = true;
+      if(timerInterval) clearInterval(timerInterval);
+      
+      logTabSwitchViolation("Quiz Terminated - Third Violation");
+      
+      document.getElementById('quiz').innerHTML = `
+        <div class="final-screen">
+          <div class="final-score-msg" style="color: #ff6464;">
+            <strong>🚫 QUIZ TERMINATED</strong><br><br>
+            You switched tabs <strong>3 times</strong> during the test.<br>
+            This is a violation of quiz rules.<br><br>
+            <strong style="color: #ff9844;">Please contact HR for further assistance.</strong><br><br>
+            <div style="color: #ffccb3; font-size: 0.9em; margin-top: 20px;">
+              <strong>Test Details:</strong><br>
+              Name: ${userInfo.name}<br>
+              Project: ${userInfo.project}<br>
+              Role: ${userInfo.role}<br>
+              Reason: Multiple tab switches (${tabSwitchCount} violations)<br>
+              Level Reached: ${levelIndex + 1}<br>
+              Questions Answered: ${questionIndex}<br>
+              Score: ${score}
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('message').textContent = "";
+      
+      saveViolationReport();
+    }
+
+    function logTabSwitchViolation(violationType) {
+      const violation = {
+        timestamp: new Date().toISOString(),
+        name: userInfo.name,
+        project: userInfo.project,
+        role: userInfo.role,
+        level: levelIndex + 1,
+        levelTitle: levels[levelIndex]?.title || 'N/A',
+        questionNumber: questionIndex + 1,
+        question: `TAB_SWITCH_VIOLATION: ${violationType}`,
+        questionType: 'violation',
+        answer: `Violation Count: ${tabSwitchCount}`,
+        correct: false,
+        points: 0,
+        currentScore: score,
+        tabSwitchCount: tabSwitchCount,
+        status: violationType
+      };
+      
+      saveToGoogleSheets(violation);
+    }
+
+    function saveViolationReport() {
+      const violationReport = {
+        timestamp: new Date().toISOString(),
+        name: userInfo.name,
+        project: userInfo.project,
+        role: userInfo.role,
+        level: levelIndex + 1,
+        levelTitle: 'FINAL_VIOLATION_REPORT',
+        questionNumber: questionIndex + 1,
+        question: 'QUIZ_TERMINATED_DUE_TO_TAB_SWITCHING',
+        questionType: 'termination',
+        answer: `Multiple tab switches detected (${tabSwitchCount} total)`,
+        correct: false,
+        points: 0,
+        currentScore: score,
+        tabSwitchCount: tabSwitchCount,
+        status: 'TERMINATED'
+      };
+      
+      saveToGoogleSheets(violationReport);
+    }
+
+    function validateOpenEndedAnswer(text, validationFn) {
+      if (!text || text.trim().length < 10) {
+        return { valid: false, message: "Please provide an answer with at least 7 words." };
+      }
+      
+      const words = text.trim().split(/\s+/);
+      if (words.length < 7) {
+        return { valid: false, message: "Please provide an answer with at least 7 words." };
+      }
+
+      if (validationFn && !validationFn(text)) {
+        return { valid: false, message: "Please provide a valid answer (7-1000 words with meaningful content)." };
+      }
+
+      return { valid: true, message: "" };
+    }
+
+    function showUserInfoForm() {
+      document.getElementById('quiz').innerHTML = `
+        <div class="user-info-form">
+          <div class="completion-msg" style="margin: 0 0 30px 0; font-size: 1.5em;">
+            <b>Welcome to <span style="color:#ff8c42">AI & Testing Quest!</span></b><br><br>
+            Please provide your information to begin:
+          </div>
+          <div class="form-group">
+            <label for="userName">Full Name*</label>
+            <input type="text" id="userName" required placeholder="Enter your full name">
+          </div>
+          <div class="form-group">
+            <label for="userProject">Project*</label>
+            <input type="text" id="userProject" required placeholder="Enter your current project">
+          </div>
+          <div class="form-group">
+            <label for="userRole">Role*</label>
+            <select id="userRole" required>
+              <option value="">Select your role</option>
+              <option value="QA Manual Tester">QA Manual Tester</option>
+              <option value="QA Automation Engineer">QA Automation Engineer</option>
+              <option value="QA Lead">QA Lead</option>
+              <option value="QA Manager">QA Manager</option>
+              <option value="Test Analyst">Test Analyst</option>
+              <option value="SDET">SDET (Software Development Engineer in Test)</option>
+              <option value="AI/ML Tester">AI/ML Tester</option>
+              <option value="Performance Tester">Performance Tester</option>
+              <option value="API Tester">API Tester</option>
+              <option value="Security Tester">Security Tester</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="AI Engineer">AI Engineer</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <button class="start-btn" onclick="validateAndStartGame()">Start Quiz</button>
+          <div class="validation-error" id="formError"></div>
+          
+          <div style="margin-top: 30px; padding: 20px; background: rgba(255, 107, 53, 0.1); border-radius: 10px; color: #ffccb3; font-size: 0.9em;">
+            <strong>Quiz Information:</strong><br>
+            • 9 Levels combining AI knowledge and Software Testing<br>
+            • Topics: GPT, Claude, MCP, AI Agents, Testing Strategies<br>
+            • Mix of multiple choice and practical questions<br>
+            • 30-minute time limit<br>
+            • <strong style="color: #ff6464;">⚠️ IMPORTANT: Do not switch tabs during the test!</strong><br>
+            • <strong style="color: #ff9844;">Three warnings will result in quiz termination</strong><br>
+            • <strong style="color: #ff6b35;">✓ Results saved to Google Sheets automatically</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function validateAndStartGame() {
+      const name = document.getElementById('userName').value.trim();
+      const project = document.getElementById('userProject').value.trim();
+      const role = document.getElementById('userRole').value;
+      const errorDiv = document.getElementById('formError');
+
+      if (!name || !project || !role) {
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = 'Please fill in all required fields.';
+        return;
+      }
+
+      if (name.length < 2) {
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = 'Please enter a valid full name.';
+        return;
+      }
+
+      userInfo = { name, project, role };
+      
+      // Save start event to Google Sheets
+      const startData = {
+        timestamp: new Date().toISOString(),
+        name: userInfo.name,
+        project: userInfo.project,
+        role: userInfo.role,
+        level: 0,
+        levelTitle: 'QUIZ_STARTED',
+        questionNumber: 0,
+        question: 'User started the quiz',
+        questionType: 'start',
+        answer: 'N/A',
+        correct: true,
+        points: 0,
+        currentScore: 0,
+        tabSwitchCount: tabSwitchCount,
+        status: 'Started'
+      };
+      saveToGoogleSheets(startData);
+      
+      startGame();
+    }
+
+    function startGame() {
+      levelIndex = 0; questionIndex = 0; score = 0;
+      minutes = 30; seconds = 0;
+      quizOver = false; gameStarted = true; quizTerminated = false;
+      
+      document.getElementById('message').textContent = "";
+      document.getElementById('quiz').innerHTML = "";
+      updateProgressBar();
+      updateTimerDisplay();
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+      renderQuestion();
+      window.scrollTo(0,0);
+    }
+
+    function updateTimerDisplay() {
+      let s = seconds.toString().padStart(2,'0');
+      let m = minutes.toString();
+      document.getElementById('timer').textContent = `${m}:${s}`;
+    }
+
+    function updateTimer() {
+      if(quizOver) return;
+      if(seconds === 0) {
+        if(minutes === 0) {
+          endGame("Time's up! Quiz completed!");
+        } else {
+          minutes--;
+          seconds = 59;
+        }
+      } else {
+        seconds--;
+      }
+      updateTimerDisplay();
+    }
+
+    function updateProgressBar() {
+      const totalQuestionsInGame = levels.reduce((sum, lvl) => sum + lvl.questions.length, 0);
+      const answeredSoFar = levels.slice(0,levelIndex).reduce((sum,lvl)=>sum+lvl.questions.length,0) + questionIndex;
+      const per = ((answeredSoFar) / totalQuestionsInGame) * 100;
+      document.getElementById('progressBar').style.width = `${per}%`;
+    }
+
+    function renderQuestion() {
+      if(quizOver || quizTerminated) return;
+      updateProgressBar();
+      document.getElementById('message').innerHTML = "";
+      const level = levels[levelIndex];
+      if(!level) return;
+      const questions = level.questions;
+      if(questionIndex >= questions.length) {
+        document.getElementById('quiz').innerHTML = `
+          <div class="completion-msg">
+            <strong>Level Complete!</strong><br><br>
+            You finished <span style="color:#ff8c42">${level.title}</span>.
+            <br>Your current score: <span class="score">${score}</span>
+          </div>
+          ${levelIndex < levels.length - 1
+            ? `<button class="next-level-btn" onclick="nextLevel()">Proceed to Next Level</button>`
+            : `<button class="next-level-btn" onclick="endGame('Congratulations! You completed all levels!')">See Final Score</button>`
+          }
+        `;
+        return;
+      }
+
+      const q = questions[questionIndex];
+      let html = `
+        <div class="level-title">${level.title}</div>
+        <div class="question-count">Question ${questionIndex+1} of ${questions.length}</div>
+        <div class="question-box">
+          <div class="question-text">${q.text}</div>
+      `;
+      
+      if(q.type === 'mc') {
+        html += `<div class="choices">${q.options.map((opt, i) =>
+          `<button class="choice-btn" data-i="${i}" onclick="submitAnswer('mc',${i})">${opt}</button>`
+        ).join('')}</div>`;
+      } else if(q.type === 'oe') {
+        html += `
+          <div class="open-ended-box">
+            <textarea class="prompt-input" id="oe-box" placeholder="Provide a detailed, comprehensive answer demonstrating your understanding of AI and testing concepts..." rows="8"></textarea>
+            <div class="validation-error" id="oe-error"></div>
+            <button class="submit-btn" onclick="submitAnswer('oe')" id="oe-btn">Submit Answer</button>
+          </div>
+        `;
+      }
+      html += `</div>
+      <div class="score">Score: ${score}</div>`;
+      document.getElementById('quiz').innerHTML = html;
+      window.scrollTo(0,0);
+    }
+
+    function submitAnswer(type, selected = null) {
+      if (quizTerminated) return;
+      
+      const level = levels[levelIndex], q = level.questions[questionIndex];
+      let isCorrect = false, points = 0;
+      
+      if(type === 'mc') {
+        const btns = document.querySelectorAll('.choice-btn');
+        btns.forEach(btn => btn.disabled = true);
+        btns[selected].classList.add('selected');
+        isCorrect = (selected === q.answer);
+        points = isCorrect ? 10 : 0;
+        let msg = isCorrect
+          ? `<span style="color:#4caf50;font-weight:bold;">Correct!</span> +${points} pts`
+          : `<span style="color:#ff6464;font-weight:bold;">Incorrect.</span> The correct answer is <b>${q.options[q.answer]}</b>.`;
+        score += points;
+        
+        // Save to Google Sheets
+        const testResult = {
+          timestamp: new Date().toISOString(),
+          name: userInfo.name,
+          project: userInfo.project,
+          role: userInfo.role,
+          level: levelIndex + 1,
+          levelTitle: levels[levelIndex].title,
+          questionNumber: questionIndex + 1,
+          question: q.text,
+          questionType: type,
+          answer: btns[selected].textContent,
+          correct: isCorrect,
+          points: points,
+          currentScore: score,
+          tabSwitchCount: tabSwitchCount,
+          status: 'In Progress'
+        };
+        saveToGoogleSheets(testResult);
+        
+        document.getElementById('message').innerHTML = `<div class="completion-msg">${msg} <br><br>
+          <button class="next-level-btn" onclick="nextQuestion()">Next Question</button>
+        </div>`;
+      } else if(type === 'oe') {
+        const box = document.getElementById('oe-box');
+        const errorDiv = document.getElementById('oe-error');
+        let val = (box && box.value) ? box.value.trim() : "";
+        
+        const validation = validateOpenEndedAnswer(val, q.validation);
+        
+        if (!validation.valid) {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = validation.message;
+          box.style.border = "2px solid #ff7a7a";
+          setTimeout(() => {
+            box.style.border = "2px solid #ff8c42";
+            errorDiv.style.display = 'none';
+          }, 3000);
+          return;
+        }
+        
+        points = q.points || 15;
+        score += points;
+        document.getElementById('oe-box').disabled = true;
+        document.getElementById('oe-btn').disabled = true;
+        errorDiv.style.display = 'none';
+        
+        // Save to Google Sheets
+        const testResult = {
+          timestamp: new Date().toISOString(),
+          name: userInfo.name,
+          project: userInfo.project,
+          role: userInfo.role,
+          level: levelIndex + 1,
+          levelTitle: levels[levelIndex].title,
+          questionNumber: questionIndex + 1,
+          question: q.text,
+          questionType: type,
+          answer: val.substring(0, 500), // Limit answer length for Google Sheets
+          correct: true,
+          points: points,
+          currentScore: score,
+          tabSwitchCount: tabSwitchCount,
+          status: 'In Progress'
+        };
+        saveToGoogleSheets(testResult);
+        
+        document.getElementById('message').innerHTML = `<div class="completion-msg">
+          <span style="color:#ff8c42;font-weight:bold;">Excellent! +${points} pts</span>
+          <br>Your detailed answer demonstrates good understanding of AI and testing concepts.<br><br>
+          <button class="next-level-btn" onclick="nextQuestion()">Next Question</button>
+        </div>`;
+      }
+      updateProgressBar();
+    }
+
+    function nextQuestion() {
+      if (quizTerminated) return;
+      questionIndex += 1;
+      renderQuestion();
+    }
+
+    function nextLevel() {
+      if (quizTerminated) return;
+      levelIndex += 1; questionIndex = 0;
+      renderQuestion();
+    }
+
+    function endGame(message) {
+      if (quizTerminated) return;
+      
+      quizOver = true;
+      if(timerInterval) clearInterval(timerInterval);
+      updateProgressBar();
+      
+      // Save final results to Google Sheets
+      const finalResult = {
+        timestamp: new Date().toISOString(),
+        name: userInfo.name,
+        project: userInfo.project,
+        role: userInfo.role,
+        level: 'FINAL',
+        levelTitle: 'QUIZ_COMPLETED',
+        questionNumber: 'FINAL',
+        question: 'Quiz completed successfully',
+        questionType: 'completion',
+        answer: `Final Score: ${score}`,
+        correct: true,
+        points: 0,
+        currentScore: score,
+        tabSwitchCount: tabSwitchCount,
+        status: 'Completed Successfully'
+      };
+      saveToGoogleSheets(finalResult);
+      
+      document.getElementById('quiz').innerHTML = `
+        <div class="final-screen">
+          <div class="final-score-msg">${message || ''}<br>
+            <br><strong>Quiz Summary:</strong><br>
+            Name: ${userInfo.name}<br>
+            Project: ${userInfo.project}<br>
+            Role: ${userInfo.role}<br>
+            <br>Your final score: <span style="color:#4caf50;font-weight:bolder;font-size:1.58em;">${score}</span>
+            <br><br>🎉 You've demonstrated knowledge in AI technologies and testing practices!<br>
+            ${tabSwitchCount > 0 ? `<br><span style="color: #ff9844;">⚠️ Note: ${tabSwitchCount} tab switch warning(s) recorded</span><br>` : ''}
+            <br><strong style="color: #ff6b35;">✓ Results saved to Google Sheets</strong>
+          </div>
+          <button class="start-btn" onclick="location.reload()">Take Quiz Again</button>
+        </div>
+      `;
+      document.getElementById('message').textContent = "";
+    }
+
+    // Initialize tab switching detection and game
+    (function initGame() {
+      initializeSessionTracking();
+      setupTabSwitchDetection();
+      
+      // Attempt to recover any failed saves from previous sessions
+      setTimeout(recoverFailedSaves, 2000); // Wait 2 seconds for page to fully load
+      
+      if (!gameStarted) {
+        showUserInfoForm();
+      }
+    })();
+
+    // Expose functions for inline handlers
+    window.submitAnswer = submitAnswer;
+    window.nextQuestion = nextQuestion;
+    window.nextLevel = nextLevel;
+    window.startGame = startGame;
+    window.endGame = endGame;
+    window.validateAndStartGame = validateAndStartGame;
+    window.closeWarning = closeWarning;
+  </script>
+</body>
+</html>
